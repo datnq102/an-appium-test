@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // dependencies on junit5
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0-M1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0-M1'
+
+    // Appium Client
+    testImplementation 'io.appium:java-client:7.3.0'
+
+}
+
+test{
+    println("Please run one of the other test tasks!")
+}
+
+task appiumTests (type: Test) {
+    group = "eCharge Testing"
+    description = "appium tests"
+
+    def props = new Properties()
+    file("gradle.properties").withInputStream { props.load(it) }
+
+    systemProperties = props as Map<String, ?>
+    systemProperties += System.properties
+
+    useJUnitPlatform {
+        includeTags "Appium"
+    }
+}
